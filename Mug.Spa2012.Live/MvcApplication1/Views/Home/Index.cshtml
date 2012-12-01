@@ -1,0 +1,59 @@
+﻿<!-- ko template: { name: templateName } --><!-- /ko -->
+
+<script type="text/html" id="template.homePage">
+    <header class="homePage">
+        <div>
+            <form action="@Url.Action("search", "Mug")" data-bind="submit: submitForm" method="post">
+                <h1>Mug Lyon</h1>
+                <div>
+                    <input type="search" data-bind="value: searchValue, valueUpdate: 'afterkeydown'" placeholder="Search a mug..." />
+                    <button type="submit">Search</button>
+                </div>
+            </form>
+        </div>
+    </header>
+</script>
+    
+<script type="text/html" id="template.searchPage">
+    <header>
+        <div>
+            <form action="@Url.Action("search", "Mug")" data-bind="submit: search" method="post">
+                <h1>Mug Lyon</h1>
+                <div>
+                    <input type="search" data-bind="value: searchValue, valueUpdate: 'afterkeydown'" placeholder="Search a mug..." />
+                    <button type="submit">Search</button>
+                </div>
+            </form>
+        </div>
+    </header>
+    <div id="body">
+        <!-- ko if: results().length > 0 -->
+        <aside>
+            <ul data-bind="foreach: filtedResults, afterAdd: displayItem, beforeRemove: hideItem">
+                <li data-bind="click: $parent.select, css: {selected: isSelected}">
+                    <img data-bind="attr: { src: imageUrl, alt: name }" />
+                    <span data-bind="text: name"></span>
+                </li>
+            </ul>
+        </aside>
+        <div>
+            <!-- ko { with: selectedResult } -->
+            <img data-bind="attr: { src: imageUrl, alt: name }" />
+            <p data-bind="text: name"></p>
+            <p class="keywords">Keyword : 
+                <!-- ko { foreach: keywords } -->
+                <span data-bind="text: $data"></span>
+                <!-- /ko -->
+            </p>
+            <p>Creation date : <span data-bind="text: creationDate"></span></p>
+            <!-- /ko -->
+            <!-- ko ifnot: hasSelectedResult -->
+            <p class="noSelectedMug">Select a mug for more information</p>
+            <!-- /ko -->
+        </div>
+        <!-- /ko -->
+        <!-- ko if: results().length == 0 -->
+        <div class="noResult">No result</div>
+        <!-- /ko -->
+    </div>
+</script>
